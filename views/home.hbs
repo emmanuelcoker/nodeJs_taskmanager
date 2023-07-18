@@ -1,0 +1,50 @@
+<h1>Homepage</h1>
+{{#if message}}
+    <div class="alert alert-success">{{message}}</div>
+{{/if}}
+
+{{#if authUser}}<h4> Welcome, {{authUser.firstName}}! </h4>{{/if}}
+
+
+
+{{#if tasks}}
+
+    <div class="table-responsive">
+      <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Users</th>
+              <th scope="col">Status</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Start date</th>
+              <th scope="col">End date</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            {{#each tasks}}
+            <tr>
+              <td>{{title}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{status}}</td>
+              <td> <span class="badge" style="{{#priorityColor priority}} {{/priorityColor}}">{{priority}}</span></td>
+              <td>{{formatDate startDate "MMMM Do YYYY"}}</td>
+              <td>{{formatDate endDate "MMMM Do YYYY"}}</td>
+              <td class="d-flex justify-content-start align-items-center">
+                {{>_editModal}}
+
+                    {{> _showTask comments=../comments }} 
+
+                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#showTask{{_id}}" class="btn btn-outline-primary btn-sm mx-2"><i class="fa fa-eye"></i></a>
+                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#editTask{{_id}}" class="btn btn-primary btn-sm mx-2"><i class="fa fa-edit"></i></a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+    </table>
+    </div>
+{{else}}
+    <p>There are currently no Tasks</p>
+{{/if}}

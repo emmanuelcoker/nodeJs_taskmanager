@@ -1,0 +1,54 @@
+{{#if message}}
+    <div class="alert alert-success">{{message}}</div>
+{{/if}}
+
+{{#if authUser}}<h4> Welcome, {{authUser.firstName}}! </h4>{{/if}}
+
+<div class="d-flex justify-content-end align-items-center">
+    <a href="/admin/tasks/create" class="btn btn-sm btn-primary">Create Task</a>
+</div>
+
+
+{{#if tasks}}
+
+  <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Users</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Status</th>
+              <th scope="col">Start date</th>
+              <th scope="col">End date</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each tasks}}
+            <tr>
+              <td>{{title}}</td>
+              <td>{{user.firstName}}</td>
+              <td> <span class="badge" style="{{#priorityColor priority}} {{/priorityColor}}">{{priority}}</span></td>
+              <td>{{status}}</td>
+              <td>{{formatDate startDate 'MM/DD/YYYY'}}</td>
+              <td>{{formatDate endDate 'MM/DD/YYYY'}}</td>
+              <td class="d-flex justify-content-start align-items-center">
+                 {{> _showTask comments=../comments authUser=authUser  }} 
+
+                <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#showTask{{_id}}" class="btn btn-outline-primary btn-sm mx-2"><i class="fa fa-eye"></i></a>
+                <a href="/admin/tasks/edit/{{_id}}" class="btn btn-primary btn-sm mx-2"><i class="fa fa-edit"></i></a>
+                <form action="/admin/tasks/{{_id}}" method="post">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa fa-trash text-white"></i></button>
+                </form>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+    </table>
+  </div>
+
+{{else}}
+    <p>There are currently no Tasks</p>
+{{/if}}

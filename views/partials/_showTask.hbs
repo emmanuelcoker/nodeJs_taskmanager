@@ -1,0 +1,89 @@
+<!-- Modal -->
+<div class="modal fade" id="showTask{{_id}}" tabindex="-1" aria-labelledby="showTaskLabel{{_id}}" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-body">
+
+            <div class="row">
+                <div class="card col-lg-6" style="border:none;">
+                    <div class="card-header" style="border:none;">
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <h3 class="mx-2">{{title}}</h3>
+                                <span class="rounded-circle" title="Priority" style="padding:10px; width: 5px; height:5px; border-radius: 50%; {{#priorityColor priority}} {{/priorityColor}}"></span>
+                                <h6 class="muted mx-2" style="float: right;"><span title="status" class="badge bg-warning text-dark">{{status}}</span></h6>
+                            </div>
+                        </div>
+                    
+                        <div class="px-2">
+                            <small class="muted">Start Date: {{formatDate startDate 'MM-DD-YYYY'}}</small> <br>
+                            <small class="muted">End Date: {{formatDate endDate 'MM-DD-YYYY'}}</small>
+                        </div>
+                    </div>
+
+                    <div class="card-body" style="border:none;">
+                        <div>
+                            <span>Description:</span>
+                            <p style="line-height: 1.5; font-size: 1.1rem;">{{description}}</p>
+                        </div>
+
+                        <div class="">
+                            
+                            <form action="/comment/{{_id}}" method="post">
+                                    <div class="form-group my-3">
+                                        <label for="users">Comment</label>
+                                        <textarea name="comment" class="form-control" id="comment" cols="30" rows="5">
+
+                                        </textarea>
+                                    </div>
+
+
+                                    <div class="form-group my-3">
+                                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                    </div>
+                            </form>
+                        </div>
+                       
+                    </div>
+
+                    
+                </div>
+
+                <div class="card col-lg-6 border-0">
+                    <div class="card-body">
+                        <div>
+                            <h4>Comments</h4>
+                            <div class="p-2" style="height: auto; max-height: 300px; overflow-y: auto;">
+                                {{#each comments}}
+                                    {{#if (ifEquals task._id ../_id)}} 
+                                        <div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted py-1 px-2">
+                                                    <img src="{{user.image}}" style="width: 20px; height:20px;" class="rounded-circle" alt="">
+                                                    {{user.firstName}}
+                                                </small>
+                                                <small class="text-muted py-1">{{formatDate createdAt "MM-DD-YYYY"}}</small>
+                                            </div>
+                                            <p class="py-3 px-2 {{#if (ifEquals user._id authUser._id) }} bg-info {{else}} bg-light {{/if}} text-dark rounded">{{comment}}</p> 
+                                        </div>
+                                        
+                                    {{/if}}
+
+                                {{else}}
+                                    <h3 class="text-dark">There are no comments on this task</h3>
+                                {{/each}}
+                            </div>
+                        </div>
+
+                    </div>
+            
+                </div>
+            </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

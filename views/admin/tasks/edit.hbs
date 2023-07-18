@@ -1,0 +1,91 @@
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="card col-lg-7 px-0">
+            <div class="card-header bg-white text-center">
+                <h3>Edit Task</h3>
+            </div>
+
+            <div class="card-body">
+                <form action="/admin/tasks/{{task._id}}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    <div class="form-group my-2">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" value="{{task.title}}" name="title" id="title">
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" class="form-control" cols="30" rows="6">{{task.description}}</textarea>
+                    </div>
+
+
+                    <div class="form-group my-2">
+                        <label for="email" class="py-3">Priority: <span id="priority-val" class="text-white" style="border-radius:10px; {{#priorityColor task.priority}} {{/priorityColor}} padding: 3px;">{{task.priority}}</span></label>
+                       <input type="range" class="form-control" name="priority" id="priority" onchange="updatePriority(this)" min="1" max="5" step="1" value="{{task.priority}}">
+                    </div>
+
+                    <div class="form-group my-3 text-center">
+                        <label for="users">Status</label>
+                        <select class="form-select" name="status">
+                            <option value="pending" {{#if (ifEquals task.status 'pending')}} selected {{/if}}>Pending</option>
+                            <option value="active" {{#if (ifEquals task.status 'active')}} selected {{/if}}>active</option>
+                            <option value="awaiting review" {{#if (ifEquals task.status 'awaiting review')}} selected {{/if}}>awaiting review</option>
+                            <option value="blocker" {{#if (ifEquals task.status 'blocker')}} selected {{/if}}>blocker</option>
+                            <option value="reviewed" {{#if (ifEquals task.status 'reviewed')}} selected {{/if}}>reviewed</option>
+                            <option value="completed" {{#if (ifEquals task.status 'completed')}} selected {{/if}}>completed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Start Date</label>
+                        <input type="datetime" class="form-control" name="startDate" value="{{formatDate task.startDate 'MM/DD/YYYY'}}" id="startDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation">End Date</label>
+                        <input type="datetime" class="form-control" name="endDate" value="{{formatDate task.endDate 'MM/DD/YYYY'}}" id="endDate">
+                    </div>
+
+                    <div class="form-group my-3 text-center">
+                        <label for="users">Assigned User</label>
+                        <select class="form-select" name="user">
+                            {{#each users}}
+                                <option value="{{_id}}" {{#if (ifEquals ../task.user._id _id)}} selected {{/if}}>{{firstName}} {{lastName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
+                    <div class="form-group my-3">
+                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updatePriority(){
+        const currPriority =  document.getElementById('priority').value;
+        document.getElementById('priority-val').innerHTML = currPriority;
+        if(currPriority == 1) {
+            document.getElementById('priority-val').style.backgroundColor = "red";
+        }
+
+         if(currPriority == 2) {
+            document.getElementById('priority-val').style.backgroundColor = "orange";
+        }
+
+         if(currPriority == 3) {
+            document.getElementById('priority-val').style.backgroundColor = "yellow";
+        }
+
+         if(currPriority == 4) {
+            document.getElementById('priority-val').style.backgroundColor = "lightgreen";
+        }
+
+        if(currPriority == 5) {
+            document.getElementById('priority-val').style.backgroundColor = "green";
+        }
+    }
+</script>
